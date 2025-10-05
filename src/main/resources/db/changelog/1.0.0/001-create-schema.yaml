@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: steve
+      changes:
+        - sql:
+            splitStatements: false
+            sql: CREATE SCHEMA core;
+
+  - changeSet:
+      id: 2
+      author: steve
+      changes:
+        - sql:
+            splitStatements: false
+            sql: GRANT USAGE ON SCHEMA core TO imaginate;
+  - changeSet:
+      id: 3
+      author: steve
+      changes:
+        - sql:
+            splitStatements: false
+            sql: GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA core TO imaginate;

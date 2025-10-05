@@ -27,9 +27,12 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>21</java.version>
+		<java.version>17</java.version>
 		<kotlin.version>1.9.25</kotlin.version>
 		<netflix-dgs.version>10.2.1</netflix-dgs.version>
+		<kotlin.jvm.target>17</kotlin.jvm.target>
+		<maven.compiler.source>17</maven.compiler.source>
+		<maven.compiler.target>17</maven.compiler.target>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -163,6 +166,18 @@
 							</sources>
 						</configuration>
 					</execution>
+					<execution>
+						<id>add-jooq-source</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>add-source</goal>
+						</goals>
+						<configuration>
+							<sources>
+								<source>${project.build.directory}/generated-sources/jooq</source>
+							</sources>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>
@@ -180,6 +195,26 @@
 						<plugin>spring</plugin>
 					</compilerPlugins>
 				</configuration>
+				<executions>
+					<execution>
+						<id>compile</id>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+						<configuration>
+							<jvmTarget>17</jvmTarget>
+						</configuration>
+					</execution>
+					<execution>
+						<id>test-compile</id>
+						<goals>
+							<goal>test-compile</goal>
+						</goals>
+						<configuration>
+							<jvmTarget>17</jvmTarget>
+						</configuration>
+					</execution>
+				</executions>
 				<dependencies>
 					<dependency>
 						<groupId>org.jetbrains.kotlin</groupId>
@@ -188,6 +223,40 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+			<plugin>
+				<groupId>org.jooq</groupId>
+				<artifactId>jooq-codegen-maven</artifactId>
+				<version>3.19.26</version>
+				<executions>
+					<execution>
+						<id>generate-jooq</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<jdbc>
+								<driver>org.postgresql.Driver</driver>
+								<url>jdbc:postgresql://localhost:5432/imaginate?stringtype=unspecified</url>
+								<user>imaginate</user>
+								<password>p</password>
+							</jdbc>
+							<generator>
+								<database>
+									<name>org.jooq.meta.postgres.PostgresDatabase</name>
+									<includes>.*</includes>
+									<inputSchema>core</inputSchema>
+								</database>
+								<target>
+									<packageName>com.imaginate.jooq</packageName>
+									<directory>${project.build.directory}/generated-sources/jooq</directory>
+								</target>
+							</generator>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 

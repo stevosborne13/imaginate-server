@@ -1,0 +1,47 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: steve
+      changes:
+        - insert:
+            tableName: users
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "1"
+              - column:
+                  name: first_name
+                  value: Steve
+              - column:
+                  name: last_name
+                  value: Osborne
+              - column:
+                  name: email
+                  value: steve@example.com
+        - insert:
+            tableName: creative_projects
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "1"
+              - column:
+                  name: name
+                  value: Test Project
+              - column:
+                  name: user_id
+                  valueNumeric: "1"
+        - insert:
+            tableName: text_data
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: "1"
+              - column:
+                  name: creative_project_id
+                  valueNumeric: "1"
+              - column:
+                  name: content
+                  value: "this is a test description"

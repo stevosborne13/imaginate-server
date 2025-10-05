@@ -1,0 +1,134 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: steve
+      changes:
+        - createTable:
+            tableName: users
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: first_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: email
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 2
+      author: steve
+      changes:
+        - createTable:
+            tableName: creative_projects
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: steve
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: creative_projects
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_creativeprojects_user
+            baseTableSchemaName: core
+            referencedTableSchemaName: core
+  - changeSet:
+      id: 4
+      author: steve
+      changes:
+        - createTable:
+            tableName: text_data
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: creative_project_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: content
+                  type: TEXT
+  - changeSet:
+      id: 5
+      author: steve
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: text_data
+            baseColumnNames: creative_project_id
+            referencedTableName: creative_projects
+            referencedColumnNames: id
+            constraintName: fk_textdata_creativeproject
+            baseTableSchemaName: core
+            referencedTableSchemaName: core
+  - changeSet:
+      id: 6
+      author: steve
+      changes:
+        - createTable:
+            tableName: media
+            schemaName: core
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: creative_project_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: link
+                  type: VARCHAR(2048)
+  - changeSet:
+      id: 7
+      author: steve
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: media
+            baseColumnNames: creative_project_id
+            referencedTableName: creative_projects
+            referencedColumnNames: id
+            constraintName: fk_media_creativeproject
+            baseTableSchemaName: core
+            referencedTableSchemaName: core
